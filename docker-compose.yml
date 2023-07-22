@@ -1,0 +1,24 @@
+version: '3.3'
+services:
+  mysql-db:
+    build: ./mysql_app
+    environment:
+      MYSQL_ROOT_PASSWORD: abdullah123
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_app/data:/var/lib/mysql
+    networks:
+      - my_network
+  java-app:
+    build: ./java_app
+    networks:
+      - my_network
+    volumes:
+      - ./java_app/JavaHibernateConnectMysql:/home/JavaHibernateConnectMysql
+    depends_on:
+      - mysql-db
+networks:
+  my_network:  # Uygulama konteynerleri arasında bir ağ oluşturur
+    driver: bridge
